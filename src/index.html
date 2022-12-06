@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>Prospects</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div class="outer">
+        <div class="inner">
+            <page class="tasks">
+                <div class="outer-tasks-grid auth">
+                    <div class="tasks-grid">
+                    </div>
+    
+                    <div class="bin-adder">Create Bin</div>
+    
+                    <div class="tasks-floater">
+                        <div class="action"></div>
+                        <input class="title" type="text" name=""  placeholder="Title" data-key="title">
+                        <textarea class="desc" type="text" name="" placeholder="Description" data-key="description"></textarea>
+                        
+                        <input class="email" type="email" name="" placeholder="Email" data-key="email">
+                        <input class="password" type="password" name="" placeholder="Password" data-key="password">
+                        
+                        <div class="button-divide"></div>
+
+                        <a href="javascript:;" class="switch-box box" tabindex="0">
+                            <div class="switch">Log in instead</div>
+                            <div class="shortcut">CTRL + K</div>
+                        </a>
+
+                        <a href="javascript:;" class="cancel-box box" tabindex="0">
+                            <div class="cancel">Cancel</div>
+                            <div class="shortcut">ESC</div>
+                        </a>
+                        <a href="javascript:;" class="confirm-box box" tabindex="0">
+                            <div class="confirm">Add</div>
+                            <div class="shortcut">CTRL + ENTER</div>
+                        </a>
+    
+                        <a href="javascript:;" class="danger-box box" tabindex="0">
+                            <div class="danger">Archive</div>
+                            <div class="shortcut">DEL</div>
+                        </a>
+                    </div>
+                </div>
+            </page>
+
+            <div class="nav">
+                <div class="nav-grid">
+                    <div class="nav-item" data-view="tasks">
+                        <div class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                        </div>
+                        <div class="label">Tasks</div>
+                    </div>
+<!--                     <div class="nav-item" data-view="calendar">
+                        <div class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                        </div>
+                        <div class="label">Calendar</div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="tasks-built.js"></script>
+<script src="calendar-built.js"></script>
+<script src="master-built.js"></script>
+</html>
