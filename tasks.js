@@ -164,7 +164,7 @@ const archiveBin = async (bid, cb) => {
     };
 }
 const updateBin = async (data, cb) => {
-    const { bid, ...clean } = data;
+    const { bid, userid, ...clean } = data;
     const { error } = await supabase.from('bins').update(clean).eq('id', bid);
 
     if (!error) {
@@ -174,7 +174,7 @@ const updateBin = async (data, cb) => {
     };
 }
 const updateBinItem = async (data, cb) => {
-    const { uuid, ...clean } = data;
+    const { uuid, userid, ...clean } = data;
     const { error } = await supabase.from('items').update(clean).eq('id', uuid);
 
     if (!error) {
@@ -534,7 +534,9 @@ const authHandler = async () => {
     document.querySelector('.outer-tasks-grid').classList.remove('auth')
 
     if (data.session) {
-        console.log('Found session', data.session)
+        console.log('Found session', data.session);
+        console.log('signing user in...');
+
         allCall(data.session.user.id)
     } 
 }

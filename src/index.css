@@ -76,11 +76,12 @@ body {
     width: 100%;
     display: grid;
     grid-template-rows: auto;
-    margin: 0 0 71px 0;
 }
 
 page {
-    display: block;
+    display: grid;
+    height: calc(100% - 71px);
+    overflow-y: auto;
 }
 .nav {
     position: fixed;
@@ -143,8 +144,11 @@ page {
 
 .outer-tasks-grid {
     display: none;
-    height: 100%;
+    width: auto;
+    height: auto;
+    grid-template-rows: 1fr min-content;
 }
+
 page.tasks > .outer-tasks-grid {
     display: grid;
 }
@@ -238,7 +242,7 @@ page.tasks > .outer-tasks-grid:not(.auth) .bin-adder {
 
     padding: 20px;
     max-height: 50px;
-    margin: auto 15px 13px 15px;
+    margin: 13px 15px 13px 15px;
     font-weight: 400;
     font-size: 14px;
     color: #cdcdcd;
