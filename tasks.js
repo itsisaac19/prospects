@@ -3,6 +3,9 @@ const supabaseUrl = 'https://mcbzsvpblzuuhhnkmimd.supabase.co';
 const supabaseKey = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1jYnpzdnBibHp1dWhobmttaW1kIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Njk0MTY0NzMsImV4cCI6MTk4NDk5MjQ3M30.IBbM4foQteYKAVXzFV7HwewsO0boqGnHCUyDqC9r10M`;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
+const dayjs = require('dayjs');
+var customParseFormat = require('dayjs/plugin/customParseFormat');
+dayjs.extend(customParseFormat);
 class HTMLManager {
     constructor() {
         this.letters = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
@@ -16,7 +19,7 @@ class HTMLManager {
             innerHTML: `
                 <div class="bin-banner">
                     <span class="blabel">${data.label}</span>
-                    <div class="adder" data-bid="${data.bid}">${this.letters[data.index]}</div>
+                    <div class="adder" data-key="${this.letters[data.index].toLowerCase()}" data-bid="${data.bid}">${this.letters[data.index]}</div>
                     </div>
                 <div class="bin-list">
                 </div>
@@ -33,7 +36,21 @@ class HTMLManager {
         let listItems = ``;
 
         items.forEach(item => {
-            listItems+=`<div class="bin-item" data-description="${item.description}" id="${item.id}">${item.title}</div>`
+            let dueDate = item.due_at;
+            let dueDateReadable = dueDate ? dayjs(dueDate).format('MMM D') : '';
+
+            let itemElement = Object.assign(document.createElement('div'), {
+                className: 'bin-item',
+                id: item.id,
+                innerHTML: `
+                    <div class="bin-item-title">${item.title}</div>
+                    <div class="bin-item-due-date" id="${dueDate || ''}">${dueDateReadable}</div>
+                    <div class="bin-item-description-preview">${item.description}</div>
+                `
+            });
+
+            itemElement.dataset.description = item.description;
+            listItems+= itemElement.outerHTML;
         });
 
         const bin = document.querySelector(`[id="${bid}"]`)
@@ -50,8 +67,17 @@ class HTMLManager {
     }
     updateItem(uuid, data) {
         const item = document.querySelector(`.bin-item[id="${uuid}"]`);
+
+        let dueDate = data.due_at;
+        let dueDateReadable = dueDate ? dayjs(dueDate).format('MMM D') : '';
+
+        item.innerHTML = `
+            <div class="bin-item-title">${data.title}</div>
+            <div class="bin-item-due-date" id="${dueDate || ''}">${dueDateReadable}</div>
+            <div class="bin-item-description-preview">${data.description}</div>
+        `
+
         item.dataset.description = data.description;
-        item.textContent = data.title;
     }
     removeItemFromBin(uuid) {
         const element = document.querySelector(`.bin-item[id="${uuid}"]`);
@@ -173,8 +199,19 @@ const updateBin = async (data, cb) => {
         console.log(error)
     };
 }
+
+const removeDueDate = async (itemUUID, cb) => {
+    const { error } = await supabase.from('items').delete().eq('id', uuid);
+    if (!error) {
+        //cb()
+    } else {    
+        console.log(error)
+    };
+}
+
 const updateBinItem = async (data, cb) => {
     const { uuid, userid, ...clean } = data;
+  
     const { error } = await supabase.from('items').update(clean).eq('id', uuid);
 
     if (!error) {
@@ -221,6 +258,7 @@ const showFloater = (e, view, delay, listeners={
     } 
 
     cleanFloater();
+    disableAdderKeys();
     floater.classList.add('grid');
 
     if (view == 'create-task') {
@@ -238,10 +276,22 @@ const showFloater = (e, view, delay, listeners={
     } 
 
     if (view == 'view-task') {
-        floater.querySelector('input.title').value = e.currentTarget.textContent;
+        floater.querySelector('input.title').value = e.currentTarget.children[0].textContent;
         floater.querySelector('textarea.desc').value = e.currentTarget.dataset.description;
         floater.querySelector('.action').textContent = `Edit task`;
         floater.querySelector('.confirm').textContent = `Update`;
+
+        floater.classList.add('task-view')
+
+        if (e.currentTarget.children[1].id.length > 0) {
+            let dueDate = e.currentTarget.children[1].id ? dayjs(e.currentTarget.children[1].id, 'YYYY-MM-DD[T]HH:mm') : '';
+            if (dueDate) {
+                console.log('due', dueDate)
+                 // YYYY-MM-DDThh:mm
+                let dueDateFormat = dueDate.format('YYYY-MM-DD[T]HH:mm')
+                floater.querySelector('.due-date').value = dueDateFormat;
+            }
+        }
     }
 
     if (view == 'auth') {
@@ -274,14 +324,18 @@ const showFloater = (e, view, delay, listeners={
 
     if (e.clientX + floater.offsetWidth > window.innerWidth) {
         console.log('flip to LEFT!', e);
-        clientXCorrected = e.clientX - 407;
+        clientXCorrected = e.clientX - floater.offsetWidth;
     }
     if (e.clientY + floater.offsetHeight > window.innerHeight) {
-        console.log('flip to TOP!', e)
-        clientYCorrected = e.clientY - 424;
+        clientYCorrected = e.clientY - floater.offsetHeight;
+        console.log('flip to TOP!', {e, clientYCorrected, floater_height: floater.offsetHeight})
+
+        if (clientYCorrected < 0) {
+            clientYCorrected = 0;
+        } 
     }
 
-    if (window.innerWidth >= 600) {
+    if (window.innerWidth >= 600 && window.innerHeight >= 750) {
         let root = document.querySelector(':root');
         root.style.setProperty('--floater-top', clientYCorrected + 'px')
         root.style.setProperty('--floater-left', clientXCorrected + 'px')
@@ -327,14 +381,17 @@ const closeFloater = (block=true) => {
         }
 
         cleanFloater();
+        assignAdderKeys();
     }, 220)
 }
 const getFloaterData = () => {
     let floater = document.querySelector('.tasks-floater');
     let data = {};
     floater.querySelectorAll('input, textarea').forEach(field => {
-        if (field.dataset.key == 'meta') {
-
+        if (field.dataset.key == 'due_at') {
+            if (field.offsetParent) {
+                data[field.dataset.key] = field.value ? dayjs(field.value).format('YYYY-MM-DD[T]HH:mm') : null;
+            } 
         } else {
             if (field.offsetParent) {
                 data[field.dataset.key] = field.value;
@@ -350,6 +407,7 @@ const getFloaterData = () => {
 
 const adderHandler = (e) => {
     let bid = e.currentTarget.dataset.bid;
+    console.log(e)
     showFloater(e, 'create-task', 0, {
         onconfirm: () => {
             let itemData = getFloaterData();
@@ -378,6 +436,7 @@ const viewTaskHandler = (e) => {
             let itemData = getFloaterData();
             let clean = itemData;
             clean.uuid = uuid;
+            console.log(clean)
             updateBinItem(clean, closeFloater)
         }
     })
@@ -438,7 +497,8 @@ const assignCancelHandler = () => {
 const floaterOutclickHandler = (e) => {
     if (e.type == 'mouseup') {
         document.onmouseup = null;
-        console.log('close it!')
+        console.log('close it!');
+        closeFloater();
         return;
     }
 
@@ -453,7 +513,7 @@ const floaterOutclickHandler = (e) => {
 
     if (isFloater == false) {
         if (window.innerWidth <= 600) {
-            if (floater.classList.contains('show')) {
+            if (floater.offsetParent) {
                 console.log('not on floater and small screen')
                 setTimeout(() => {
                     document.onmouseup = floaterOutclickHandler;
@@ -469,9 +529,45 @@ const assignFloaterOutclick = () => {
     document.addEventListener('mousedown', floaterOutclickHandler)
 }
 
+const adderKeyDownHandlers = (e) => {
+    let adderPressed = Array.from(document.querySelectorAll('.adder')).find(adder => {
+        return e.key == adder.dataset.key;
+    });
+
+    if (adderPressed) {
+        adderPressed.classList.add('down');
+    }
+}
+
+const adderKeyUpHandlers = (e) => {
+    let adderPressed = Array.from(document.querySelectorAll('.adder')).find(adder => {
+        return e.key == adder.dataset.key;
+    });
+
+    if (adderPressed) {
+        setTimeout(() => {
+            adderPressed.dispatchEvent(new MouseEvent('click', {
+                clientX: adderPressed.offsetLeft + 20,
+                clientY: adderPressed.offsetTop + 20
+            }));    
+        }, 200)
+
+
+        adderPressed.classList.remove('down')
+    }
+}
+
+const assignAdderKeys = () => {
+    document.body.onkeydown = adderKeyDownHandlers;
+    document.body.onkeyup = adderKeyUpHandlers;
+}
+const disableAdderKeys = () => {
+    document.body.onkeydown = null;
+    document.body.onkeyup = null;
+}
 
 const reassignAllHandlers = () => {
-    assignCreateItemHandlers();
+    assignCreateItemHandlers(); 
     assignCreateBinHandler();
     assignCancelHandler();
 
@@ -559,5 +655,7 @@ const allCall = async (uid) => {
     assignViewTaskHandlers();
 
     assignFloaterOutclick();
+    assignAdderKeys();
+
 }
 global.tasksAllCall = allCall;
