@@ -428,10 +428,10 @@ page.tasks > .outer-tasks-grid:not(.auth) .bin-adder {
     display: none;
 }
 @media (pointer:none), (pointer:coarse) {
-    input:not(:valid) + .mobile-fallback-label {
+    .task-view input:not(:valid) + .mobile-fallback-label {
         display: block;
     }
-    input::-webkit-date-and-time-value {
+    .task-view input::-webkit-date-and-time-value {
         text-align: left;
     }
 }
