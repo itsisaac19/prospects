@@ -6,6 +6,8 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 const dayjs = require('dayjs');
 var customParseFormat = require('dayjs/plugin/customParseFormat');
 dayjs.extend(customParseFormat);
+
+global.dayjs = dayjs;
 class HTMLManager {
     constructor() {
         this.letters = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
@@ -37,7 +39,14 @@ class HTMLManager {
 
         items.forEach(item => {
             let dueDate = item.due_at;
-            let dueDateReadable = dueDate ? dayjs(dueDate).format('MMM D') : '';
+            let dueDateReadable = '';
+            if (dueDate) {
+                if (dayjs(dueDate).isSame(dayjs(), 'day')) {
+                    dueDateReadable = dayjs(dueDate).format('h[:]mm A');
+                } else {
+                    dueDateReadable = dayjs(dueDate).format('MMM D');
+                }
+            } 
 
             let itemElement = Object.assign(document.createElement('div'), {
                 className: 'bin-item',
@@ -58,9 +67,25 @@ class HTMLManager {
     }
     addItemToBin(newItem) {
         const bin = document.querySelector(`[id="${newItem.bid}"]`)
+
+        let dueDate = newItem.due_at;
+        let dueDateReadable = '';
+        if (dueDate) {
+            if (dayjs(dueDate).isSame(dayjs(), 'day')) {
+                dueDateReadable = dayjs(dueDate).format('h[:]mm A');
+            } else {
+                dueDateReadable = dayjs(dueDate).format('MMM D');
+            }
+        } 
+
         const itemElement = Object.assign(document.createElement('div'), {
             className: 'bin-item',
-            innerHTML: `${newItem.title}`
+            id: newItem.id,
+            innerHTML: `
+                <div class="bin-item-title">${newItem.title}</div>
+                <div class="bin-item-due-date" id="${dueDate || ''}">${dueDateReadable}</div>
+                <div class="bin-item-description-preview">${newItem.description}</div>
+            `
         });
         itemElement.dataset.description = newItem.description;
         bin.querySelector('.bin-list').appendChild(itemElement);
@@ -69,7 +94,14 @@ class HTMLManager {
         const item = document.querySelector(`.bin-item[id="${uuid}"]`);
 
         let dueDate = data.due_at;
-        let dueDateReadable = dueDate ? dayjs(dueDate).format('MMM D') : '';
+        let dueDateReadable = '';
+        if (dueDate) {
+            if (dayjs(dueDate).isSame(dayjs(), 'day')) {
+                dueDateReadable = dayjs(dueDate).format('h[:]mm A');
+            } else {
+                dueDateReadable = dayjs(dueDate).format('MMM D');
+            }
+        } 
 
         item.innerHTML = `
             <div class="bin-item-title">${data.title}</div>
@@ -221,14 +253,9 @@ const updateBinItem = async (data, cb) => {
     };
 }
 
-const createBinItem = async (bid, item, cb) => {
-    const { data, error } = await supabase.from('items').insert({
-        id: uuidv4(),
-        bid: bid,
-        title: item.title,
-        description: item.description,
-        meta: item.meta,
-    }).select();
+const createBinItem = async (item, cb) => {
+    const { userid, ...clean } = item;
+    const { data, error } = await supabase.from('items').insert(clean).select();
 
     console.log(data, error)
     if (!error) cb();
@@ -267,6 +294,7 @@ const showFloater = (e, view, delay, listeners={
         floater.querySelector('.confirm').textContent = `Add`;
         floater.querySelector('.danger-box').classList.add('hide')
         //floater.querySelector('input.title').focus();
+        floater.classList.add('task-view')
     }
     
     if (view == 'edit-bin') {
@@ -290,7 +318,7 @@ const showFloater = (e, view, delay, listeners={
                  // YYYY-MM-DDThh:mm
                 let dueDateFormat = dueDate.format('YYYY-MM-DD[T]HH:mm')
                 floater.querySelector('.due-date').value = dueDateFormat;
-            }
+            } 
         }
     }
 
@@ -411,7 +439,9 @@ const adderHandler = (e) => {
     showFloater(e, 'create-task', 0, {
         onconfirm: () => {
             let itemData = getFloaterData();
-            createBinItem(bid, itemData, closeFloater);
+            itemData.id = uuidv4();
+            itemData.bid = bid;
+            createBinItem(itemData, closeFloater);
         }
     })
 }

@@ -80,8 +80,7 @@ body {
 
 page {
     display: grid;
-    height: calc(100% - 71px);
-    overflow-y: auto;
+    padding: 0px 0px 71px 0px;
 }
 .nav {
     position: fixed;
@@ -163,11 +162,11 @@ page.tasks > .outer-tasks-grid:not(.auth) .bin-adder {
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
 
     opacity: 1;
-    transition: opacity 0.4s linear;
+    transition: opacity 0.2s ease;
 
     gap: 1px;
 }
-.outer-tasks-grid:has(.mobile-view) > .tasks-grid {
+.outer-tasks-grid:has(.mobile-view.show) > .tasks-grid {
     opacity: 0.5;
 }
 .task-bin {
@@ -177,7 +176,7 @@ page.tasks > .outer-tasks-grid:not(.auth) .bin-adder {
     box-sizing: border-box;
 
     font-family: Inter;
-    background: rgb(19, 19, 19);
+    background: rgb(23, 23, 23);
     
     display: grid;
 }
@@ -328,7 +327,7 @@ page.tasks > .outer-tasks-grid:not(.auth) .bin-adder {
     z-index: 2;
 
     opacity: 0;
-    transition: opacity 0.3s linear;
+    transition: opacity 0.2s ease;
 }
 .tasks-floater.grid {
     display: grid;
@@ -415,7 +414,26 @@ page.tasks > .outer-tasks-grid:not(.auth) .bin-adder {
     transition: all cubic-bezier(.4,0,.2,1) .15s;
 
 
-    font-family: Inter ;
+    font-family: Inter;
+}
+
+.mobile-fallback-label {
+    position: absolute;
+    color: white;
+    font-family: Inter;
+    font-size: 14px;
+    top: 85px;
+    left: 34px;
+
+    display: none;
+}
+@media (pointer:none), (pointer:coarse) {
+    input:not(:valid) + .mobile-fallback-label {
+        display: block;
+    }
+    input::-webkit-date-and-time-value {
+        text-align: left;
+    }
 }
 .tasks-floater .due-date {
     margin: 0 0 10px 0;
@@ -425,7 +443,7 @@ page.tasks > .outer-tasks-grid:not(.auth) .bin-adder {
     color-scheme: dark;
     padding-right: 0.8rem;
     display: none;
-
+    min-height: 2.5rem;
 }
 .tasks-floater.task-view .due-date {
     display: block;

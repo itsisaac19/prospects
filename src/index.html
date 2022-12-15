@@ -19,7 +19,9 @@
     
                     <div class="tasks-floater">
                         <div class="action"></div>
-                        <input class="due-date" type="datetime-local" name="due" data-key="due_at">
+
+                        <input class="due-date" type="datetime-local" name="due" data-key="due_at" required>
+                        <span class="mobile-fallback-label">mm/dd/yyyy --:-- --</span>
 
                         <input class="title" type="text" name=""  placeholder="Title" data-key="title">
                         <textarea class="desc" type="text" name="" placeholder="Description" data-key="description"></textarea>
