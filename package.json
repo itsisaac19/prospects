@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --config webpack.config.js",
+    "bundle": "webpack --config webpack.config.js",
+    "start-proxy": "node proxy.js",
+    "dev": "start npm run bundle && start npm run start-proxy",
     "produce": "webpack --config prod.config.js"
   },
   "keywords": [],
@@ -15,6 +17,7 @@
     "html-inline-css-webpack-plugin": "^1.11.1",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.7.2",
+    "node-polyfill-webpack-plugin": "^2.0.1",
     "react-dev-utils": "^12.0.1",
     "style-loader": "^3.3.1",
     "terser-webpack-plugin": "^5.3.6",
@@ -22,8 +25,15 @@
     "webpack-cli": "^5.0.0"
   },
   "dependencies": {
+    "@fullcalendar/core": "^6.0.1",
+    "@fullcalendar/daygrid": "^6.0.1",
+    "@fullcalendar/icalendar": "^6.0.1",
+    "@fullcalendar/list": "^6.0.1",
+    "@mturco/context-menu": "^2.0.0",
     "@supabase/supabase-js": "^2.1.1",
+    "color": "^4.2.3",
     "dayjs": "^1.11.7",
+    "ical.js": "^1.5.0",
     "nanoid": "^4.0.0",
     "uuid": "^9.0.0"
   }

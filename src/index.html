@@ -12,11 +12,58 @@
         <div class="inner">
             <page class="tasks">
                 <div class="outer-tasks-grid auth">
-                    <div class="tasks-grid">
+                    <div id="task-sidebar">
+                        <div class="task-view-switcher">
+                            <div class="view-box dashboard active" data-view="dashboard">
+                                <svg id="dashboard-svg" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="65px" height="65px" viewBox="0 0 400 400.00001" id="svg2" version="1.1" inkscape:version="0.91 r13725" sodipodi:docname="dashboard.svg" fill="#000000" stroke="#000000" stroke-width="0"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_iconCarrier"> <defs id="defs4"></defs> <sodipodi:namedview id="base" pagecolor="#ffffff" bordercolor="#666666" borderopacity="1.0" inkscape:pageopacity="0.0" inkscape:pageshadow="2" inkscape:zoom="1.4" inkscape:cx="90.721604" inkscape:cy="166.49755" inkscape:document-units="px" inkscape:current-layer="layer1" showgrid="false" units="px" showguides="true" inkscape:guide-bbox="true" inkscape:window-width="1920" inkscape:window-height="1056" inkscape:window-x="0" inkscape:window-y="24" inkscape:window-maximized="1"> <sodipodi:guide position="200.71429,121.42857" orientation="1,0" id="guide23298"></sodipodi:guide> </sodipodi:namedview> <metadata id="metadata7"> <rdf:rdf> <cc:work rdf:about=""> <dc:format>image/svg+xml</dc:format> <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"></dc:type> <dc:title></dc:title> </cc:work> </rdf:rdf> </metadata> <g inkscape:label="Capa 1" inkscape:groupmode="layer" id="layer1" transform="translate(0,-652.36216)"> <path style="opacity:1;fill:inherit;fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" d="m 0,652.36212 0,116 116,0 0,-116 -116,0 z m 141,0 0,116 116,0 0,-116 -116,0 z m 141,0 0,116 118,0 0,-116 -118,0 z m -282,141 0,116 116,0 0,-116 -116,0 z m 141,0 0,116 116,0 0,-116 -116,0 z m 141,0 0,116 118,0 0,-116 -118,0 z m -282,141 0,118.00008 116,0 0,-118.00008 -116,0 z m 141,0 0,118.00008 116,0 0,-118.00008 -116,0 z m 141,0 0,118.00008 118,0 0,-118.00008 -118,0 z" id="rect23362" inkscape:connector-curvature="0"></path> </g> </g></svg>
+                            </div>
+                            <div class="view-box split" data-view="split">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-columns"><path d="M12 3h7a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-7m0-18H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h7m0-18v18"/></svg>
+                            </div>
+                            <div class="view-box cal" data-view="cal">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                            </div>
+                        </div>
+                        <div class="list-label">My bins</div>
+                        <div class="bins-list-wrap">
+                            <div class="fade-up"></div>
+                            <div class="bins-list">
+
+
+                            </div>
+                            <div class="fade-down"></div>
+                        </div>
+                        <div class="bin-adder">
+                            <div class="bin-adder-text">Create a bin</div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        </div>
+                    </div>
+
+                    <div class="tasks-bin-view">
+                        <div class="content"></div>
+                        <div class="empty-filler">
+                            <span>
+                            Hmmm. It's quiet in here. Here are two ways to add tasks:
+                            <ul>
+                                <li>click the button (with a letter on it) above</li>
+                                <li>pressing the letter of that button on your keyboard</li>
+                            </ul>
+                            </span>
+                        </div>
                     </div>
     
-                    <div class="bin-adder">Create Bin</div>
-    
+                    <div class="handler-wrap">
+                        <div class="handler">
+                            <div class="handler-bar"></div>
+                        </div>
+                    </div>
+
+                    <div class="tasks-grid-wrap">
+                        <div class="tasks-grid show">
+                        </div>
+                    </div>
+
+
                     <div class="tasks-floater">
                         <div class="action"></div>
 
@@ -31,24 +78,49 @@
                         
                         <div class="button-divide"></div>
 
-                        <a href="javascript:;" class="switch-box box" tabindex="0">
+                        <a href="javascript:;" class="switch-box box" shortcut="" tabindex="0">
                             <div class="switch">Log in instead</div>
                             <div class="shortcut">CTRL + K</div>
                         </a>
 
-                        <a href="javascript:;" class="cancel-box box" tabindex="0">
+                        <a href="javascript:;" class="cancel-box box" shortcut="Escape" tabindex="0">
                             <div class="cancel">Cancel</div>
                             <div class="shortcut">ESC</div>
                         </a>
-                        <a href="javascript:;" class="confirm-box box" tabindex="0">
+                        <a href="javascript:;" class="confirm-box box" shortcut="Control+Enter" tabindex="0">
                             <div class="confirm">Add</div>
                             <div class="shortcut">CTRL + ENTER</div>
                         </a>
     
-                        <a href="javascript:;" class="danger-box box" tabindex="0">
+                        <a href="javascript:;" class="danger-box box" shortcut="Delete" tabindex="0">
                             <div class="danger">Archive</div>
                             <div class="shortcut">DEL</div>
                         </a>
+                    </div>
+                </div>
+
+                <div class="outer-calendar-grid collapse-toggles">
+                    <div class="fixed-menu-icon">
+                        <svg focusable="false" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path></svg>
+                    </div>
+                    <div id="sidebar">
+                        <div class="list-label">My calendars</div>
+                        <div class="calendars-list">
+
+                            <div class="cal-adder">
+                                <input type="url" placeholder="webcal://...icloud.com" required pattern="((https|http|webcal):\/\/.*((\.(icloud|google)\.com.*)|.ics))" class="cal-link">
+                                <button class="cal-add-button">Add calendar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="calendar"></div>
+
+                    <div class="message">
+                        <div class="content">
+                            <div class="heading"></div>
+                            <div class="paragraph"></div>
+                        </div>
                     </div>
                 </div>
             </page>
@@ -61,12 +133,12 @@
                         </div>
                         <div class="label">Tasks</div>
                     </div>
-<!--                     <div class="nav-item" data-view="calendar">
+                    <div class="nav-item" data-view="calendar">
                         <div class="icon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                         </div>
                         <div class="label">Calendar</div>
-                    </div> -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -75,4 +147,6 @@
 <script src="tasks-built.js"></script>
 <script src="calendar-built.js"></script>
 <script src="master-built.js"></script>
+
+<link rel="stylesheet" href="calendar.css">
 </html>

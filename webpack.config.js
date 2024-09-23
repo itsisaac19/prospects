@@ -1,4 +1,5 @@
 const path = require('path');
+const NodePolyfillPlugin = require('node-polyfill-webpack-plugin')
 
 module.exports = {
   entry: {
@@ -11,5 +12,10 @@ module.exports = {
     filename: '[name]-built.js'
   },
   mode: 'development',
-  watch: true
+  watch: true,
+  resolve: {
+    fallback: {
+      fs: false,
+    }
+  }
 };
